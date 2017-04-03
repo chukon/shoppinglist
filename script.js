@@ -1,3 +1,38 @@
+//v 4.0 save / get array via cookies
+function set_cookie(cookiename, cookievalue, hours) {
+    var date = new Date();
+    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
+
+}
+
+
+window.onload = function() {
+  populateshoppinglistonload();
+   displayShoppinglists();
+};
+
+function savecookie()
+{
+  delete_cookie('item');
+ $.cookie('item', escape(shoppinglist.join(',')), 24*365*10);
+}
+
+function delete_cookie(name) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+
+function populateshoppinglistonload()
+{
+  //delete_cookie('item');
+  shoppinglist = [];
+  addtocart = [];
+cookie=unescape($.cookie('item'));
+shoppinglist=cookie.split(',');
+}
+
+
 var MyItems = {
   name:"",
   price:""
@@ -20,7 +55,8 @@ function changeShoppinglist(position) {
   var ecost = prompt("Please enter your name", ReplacedAmount);
   shoppinglist[position] = eitem + "," + '$' + ecost;
   displayShoppinglists();
-  displayShoppingCart() 
+  displayShoppingCart();
+  savecookie();
 }
 
 //v3.1
@@ -35,7 +71,8 @@ function changeShoppingCart(position) {
   var ecost = prompt("Please enter your name", ReplacedAmount);
   addtocart[position] = eitem + "," + '$' + ecost;
   displayShoppinglists();
-  displayShoppingCart() 
+  displayShoppingCart();
+   savecookie();
 }
 
 //v3.1 
@@ -46,8 +83,9 @@ function addbacktoshoppinglist(item,num) {
   //display shoppinglist
   displayShoppinglists();
 //v3.1 display displayShoppingCart() 
-  displayShoppingCart() 
+  displayShoppingCart(); 
   clearFocus();
+   savecookie();
 }
 
 //v 3.1 Update function addShoppinglist by adding objects
@@ -57,9 +95,10 @@ function addtoshopcart(item, num) {
   //display shoppinglist
   displayShoppinglists();
 //v3.1 display displayShoppingCart() 
-  displayShoppingCart() 
+  displayShoppingCart(); 
   //Clear
   clearFocus();
+   savecookie();
 }
 
 //v 3.1 Update function addShoppinglist by adding objects
@@ -90,8 +129,9 @@ function addShoppinglist(item,cost) {
   //display shoppinglist
   displayShoppinglists();
 //v3.1 display displayShoppingCart() 
-  displayShoppingCart() 
+  displayShoppingCart(); 
   clearFocus();
+  savecookie();
 }
 
 function clearFocus()
@@ -106,7 +146,7 @@ function clearFocus()
 function displayShoppinglists() {
 var TheList = "";
 var TheRow = "";
-//var arrayLength = shoppinglist.length;
+var arrayLength = shoppinglist.length;
 for (var i = 0; i < shoppinglist.length; i++) {
   //v 3.1 change button name to btndelete
 var btndelete =  ' <input class="button" id="remove" name="delete" type="button" value="Remove Item" onclick="deleteShoppinglists(' + i + ')" />';
@@ -119,7 +159,13 @@ TheRow = '<li>' + shoppinglist[i] + btndelete + ' '  + btnaddcart + '</li>';
 TheList += TheRow;
 }
 //v3.1 add Title
-document.getElementById("MyList").innerHTML = '<ul>' + TheList + '</ul>';
+if (arrayLength > 0)
+{
+  document.getElementById("MyList").innerHTML = '<ul>' + TheList + '</ul>';
+}else
+{
+  document.getElementById("MyList").innerHTML = '';
+}
 }
 
 //v3.1
@@ -151,13 +197,13 @@ if (arrayLength > 0)
 function deleteShoppinglists(position) {
   shoppinglist.splice(position, 1);
   displayShoppinglists();
-  displayShoppingCart() 
+  displayShoppingCart();
 }
 //v3.1
 function deleteShoppingCart(position) {
   addtocart.splice(position, 1);
   displayShoppinglists();
-  displayShoppingCart() 
+  displayShoppingCart();
 }
 
 
