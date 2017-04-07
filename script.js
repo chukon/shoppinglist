@@ -1,5 +1,5 @@
 //v 4.0 save / get array via cookies
-
+document.getElementById("item").focus();
 //v 4.0 read cookie on load and display
 window.onload = function() {
   populateshoppinglistonload();
