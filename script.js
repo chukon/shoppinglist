@@ -139,24 +139,8 @@ function addtoshopcart(item, num) {
 //v 3.1 Update function addShoppinglist by adding objects
 function addShoppinglist(item) {
   //v 3.0 declare variable for groc string
-  var groc="";
-  //v 3.0 v 3.0 declare variable for loop count
-  var count=0;
-  //v 3.0 edit value for MyItems.name
-  MyItems.name=item;
-  //v 3.0 edit value for MyItems.cost
-  //MyItems.price=cost;
-  //v 3.0 for loop through object propterties and 
-  for (var x in MyItems){
-    
-    //add to groc string from object array item
-    groc += MyItems[x];
-  
-    //increment count by 1
-   count++;
-  }
   //push to shoppinglist
-  shoppinglist.push(groc);
+  shoppinglist.push(item);
   //display shoppinglist
   displayShoppinglists();
 //v3.1 display displayShoppingCart() 
