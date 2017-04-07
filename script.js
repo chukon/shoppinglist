@@ -1,23 +1,49 @@
 //v 4.0 save / get array via cookies
-function set_cookie(cookiename, cookievalue, hours) {
-    var date = new Date();
-    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
-    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
 
-}
-
-
+//v 4.0 read cookie on load and display
 window.onload = function() {
   populateshoppinglistonload();
    displayShoppinglists();
 };
 
-function savecookie()
-{
-  delete_cookie('item');
- $.cookie('item', escape(shoppinglist.join(',')), 24*365*10);
+//read cookie and return
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
 
+//v. 4.0remove and format cookie
+function remove_unwanted(str) {  
+    
+  if ((str===null) || (str===''))  
+       return false;  
+ else  
+   str = str.toString();  
+   str = str.replace(/%20/g, "");
+   str = str.replace(/%24/g, "$"); 
+   str = str.replace(/%7C/g, " | ");
+  return str.replace(/[^\x20-\x7E]/g, '');  
+}  
+
+
+//v 4.0 save cookie
+function savecookie()
+{
+  delete_cookie('konkollist');
+   var date = new Date();
+   //keeps for a year
+    date.setTime(date.getTime() + Number(365) * 3600 * 1000);
+   document.cookie = 'konkollist' + "=" + escape(shoppinglist.join(',')) + "; path=/;expires = " + date.toGMTString();
+}
+
+
+//v 4.0 delete cookie
 function delete_cookie(name) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
@@ -25,11 +51,17 @@ function delete_cookie(name) {
 
 function populateshoppinglistonload()
 {
-  //delete_cookie('item');
   shoppinglist = [];
   addtocart = [];
-cookie=unescape($.cookie('item'));
-shoppinglist=cookie.split(',');
+  //load cookie into array
+  var y = readCookie('konkollist');
+  //remove unwanted chars and format
+  y = remove_unwanted(y); 
+  //spit array by comma %2C
+  y = y.split('%2C');
+  if (y) {
+    shoppinglist = y;
+   }
 }
 
 
@@ -56,6 +88,7 @@ function changeShoppinglist(position) {
   shoppinglist[position] = eitem + "," + '$' + ecost;
   displayShoppinglists();
   displayShoppingCart();
+  //v 4.0 save cookie
   savecookie();
 }
 
@@ -72,6 +105,7 @@ function changeShoppingCart(position) {
   addtocart[position] = eitem + "," + '$' + ecost;
   displayShoppinglists();
   displayShoppingCart();
+  //v 4.0 save cookie
    savecookie();
 }
 
@@ -85,6 +119,7 @@ function addbacktoshoppinglist(item,num) {
 //v3.1 display displayShoppingCart() 
   displayShoppingCart(); 
   clearFocus();
+  //v 4.0 save cookie
    savecookie();
 }
 
@@ -98,6 +133,7 @@ function addtoshopcart(item, num) {
   displayShoppingCart(); 
   //Clear
   clearFocus();
+  //v 4.0 save cookie
    savecookie();
 }
 
@@ -119,7 +155,7 @@ function addShoppinglist(item,cost) {
     //add to groc string from object array item
     groc += MyItems[x];
     if (count===0){
-      groc += ", ";
+      groc += " | ";
     }
     //increment count by 1
    count++;
@@ -131,6 +167,7 @@ function addShoppinglist(item,cost) {
 //v3.1 display displayShoppingCart() 
   displayShoppingCart(); 
   clearFocus();
+  //v 4.0 save cookie
   savecookie();
 }
 
@@ -198,6 +235,8 @@ function deleteShoppinglists(position) {
   shoppinglist.splice(position, 1);
   displayShoppinglists();
   displayShoppingCart();
+   //v 4.0 save cookie
+  savecookie();
 }
 //v3.1
 function deleteShoppingCart(position) {
