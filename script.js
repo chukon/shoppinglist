@@ -5,7 +5,6 @@ window.onload = function() {
   populateshoppinglistonload();
    displayShoppinglists();
 };
-
 //read cookie and return
 function readCookie(name) {
     var nameEQ = name + "=";
