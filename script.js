@@ -137,7 +137,7 @@ function addtoshopcart(item, num) {
 }
 
 //v 3.1 Update function addShoppinglist by adding objects
-function addShoppinglist(item,cost) {
+function addShoppinglist(item) {
   //v 3.0 declare variable for groc string
   var groc="";
   //v 3.0 v 3.0 declare variable for loop count
@@ -145,17 +145,13 @@ function addShoppinglist(item,cost) {
   //v 3.0 edit value for MyItems.name
   MyItems.name=item;
   //v 3.0 edit value for MyItems.cost
-  MyItems.price=cost;
+  //MyItems.price=cost;
   //v 3.0 for loop through object propterties and 
   for (var x in MyItems){
-    if (count===1){
-      groc += "$";
-    }
+    
     //add to groc string from object array item
     groc += MyItems[x];
-    if (count===0){
-      groc += " | ";
-    }
+  
     //increment count by 1
    count++;
   }
@@ -173,7 +169,7 @@ function addShoppinglist(item,cost) {
 function clearFocus()
 {
   document.getElementById("item").value = "";
-   document.getElementById("cost").value = "";
+ //  document.getElementById("cost").value = "";
   document.getElementById("item").focus();
 }
 
